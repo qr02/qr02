@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-theme="dark">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="王祺润 · 大二学生 · 个人主页与联系方式" />
+  <title>王祺润 · 个人主页</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="noise" aria-hidden="true"></div>
+
+  <header class="site-header">
+    <a class="logo" href="#hero">WQR</a>
+    <nav class="nav" aria-label="主导航">
+      <a href="#about">关于</a>
+      <a href="#skills">技能</a>
+      <a href="#projects">项目</a>
+      <a href="#contact">联系</a>
+    </nav>
+    <button type="button" class="theme-toggle" id="themeToggle" aria-label="切换浅色/深色主题">
+      <span class="theme-icon theme-icon--sun" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
+      </span>
+      <span class="theme-icon theme-icon--moon" aria-hidden="true">
+        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+      </span>
+    </button>
+    <button type="button" class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
+      <span></span><span></span>
+    </button>
+  </header>
+
+  <main>
+    <section id="hero" class="hero section">
+      <div class="hero__content reveal">
+        <p class="hero__eyebrow">你好，我是 · 大二</p>
+        <h1 class="hero__title"><span class="hero__name">王祺润</span></h1>
+        <p class="hero__tagline">在读学生，正在用代码搭建自己的小项目，也在这里记录成长。</p>
+        <div class="hero__actions">
+          <a href="#projects" class="btn btn--primary">查看项目</a>
+          <a href="#contact" class="btn btn--ghost">联系我</a>
+        </div>
+      </div>
+      <div class="hero__visual reveal reveal--delay">
+        <div class="avatar" role="img" aria-label="头像占位">
+          <span class="avatar__initials">祺润</span>
+          <div class="avatar__ring"></div>
+        </div>
+      </div>
+    </section>
+
+    <section id="about" class="section section--narrow">
+      <h2 class="section__title reveal">关于我</h2>
+      <div class="about reveal reveal--delay">
+        <p>我是王祺润，目前大二在读，对编程和做产品这件事越来越有兴趣。</p>
+        <p>平时会写网页和小工具，从 HTML/CSS/JavaScript 入手，也在慢慢补计算机基础和算法。</p>
+        <p>我喜欢把课上学到的知识和自己的点子结合起来，做成能打开、能用的东西。</p>
+        <p>这个站点就是我的个人主页，用来展示项目、整理技能，也方便别人联系我。</p>
+      </div>
+    </section>
+
+    <section id="skills" class="section">
+      <h2 class="section__title reveal">技能</h2>
+      <div class="skills reveal reveal--delay" role="list">
+        <span class="skill-tag" role="listitem">HTML / CSS</span>
+        <span class="skill-tag" role="listitem">JavaScript</span>
+        <span class="skill-tag" role="listitem">TypeScript</span>
+        <span class="skill-tag" role="listitem">React</span>
+        <span class="skill-tag" role="listitem">Node.js</span>
+        <span class="skill-tag" role="listitem">Git</span>
+        <span class="skill-tag" role="listitem">REST API</span>
+        <span class="skill-tag" role="listitem">响应式设计</span>
+        <span class="skill-tag" role="listitem">Figma</span>
+        <span class="skill-tag" role="listitem">CI/CD</span>
+        <span class="skill-tag" role="listitem">性能优化</span>
+        <span class="skill-tag" role="listitem">无障碍 (a11y)</span>
+      </div>
+    </section>
+
+    <section id="projects" class="section">
+      <h2 class="section__title reveal">精选项目</h2>
+      <div class="projects-grid">
+        <article class="project-card reveal">
+          <div class="project-card__meta">
+            <span class="project-card__year">2025</span>
+            <span class="project-card__type">Web App</span>
+          </div>
+          <h3 class="project-card__title">任务看板 Lite</h3>
+          <p class="project-card__desc">轻量看板应用，支持拖拽排序、本地持久化与键盘快捷键，纯前端实现，可离线使用。</p>
+          <ul class="project-card__tags">
+            <li>Vue 3</li>
+            <li>IndexedDB</li>
+            <li>PWA</li>
+          </ul>
+          <a href="#" class="project-card__link">查看详情 →</a>
+        </article>
+
+        <article class="project-card reveal reveal--delay">
+          <div class="project-card__meta">
+            <span class="project-card__year">2024</span>
+            <span class="project-card__type">Open Source</span>
+          </div>
+          <h3 class="project-card__title">CLI 脚手架工具</h3>
+          <p class="project-card__desc">一键生成符合团队规范的项目模板，内置 ESLint、测试与 GitHub Actions 工作流配置。</p>
+          <ul class="project-card__tags">
+            <li>Node.js</li>
+            <li>Commander</li>
+            <li>GitHub Actions</li>
+          </ul>
+          <a href="#" class="project-card__link">查看详情 →</a>
+        </article>
+
+        <article class="project-card reveal reveal--delay-2">
+          <div class="project-card__meta">
+            <span class="project-card__year">2024</span>
+            <span class="project-card__type">Design</span>
+          </div>
+          <h3 class="project-card__title">个人静态主页</h3>
+          <p class="project-card__desc">就是你现在看到的这个站点：单页布局、深浅色主题、响应式与滚动动效，纯 HTML/CSS/JS，可部署到 GitHub Pages。</p>
+          <ul class="project-card__tags">
+            <li>HTML</li>
+            <li>CSS</li>
+            <li>JavaScript</li>
+          </ul>
+          <a href="https://github.com/qr02" class="project-card__link" target="_blank" rel="noopener noreferrer">在 GitHub 查看 →</a>
+        </article>
+      </div>
+    </section>
+
+    <section id="contact" class="section section--narrow">
+      <h2 class="section__title reveal">联系我</h2>
+      <p class="contact__lead reveal reveal--delay">学习交流、项目合作或随便聊聊，发邮件即可。</p>
+      <div class="contact-links reveal reveal--delay">
+        <a class="contact-link" href="mailto:wanvqr@gmail.com">
+          <span class="contact-link__label">Email</span>
+          <span class="contact-link__value">wanvqr@gmail.com</span>
+        </a>
+        <a class="contact-link" href="https://github.com/qr02" target="_blank" rel="noopener noreferrer">
+          <span class="contact-link__label">GitHub</span>
+          <span class="contact-link__value">@qr02</span>
+        </a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>© <span id="year"></span> 王祺润 · 用 ❤ 与静态 HTML 构建</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
