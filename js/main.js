@@ -45,6 +45,16 @@
     yearEl.textContent = String(new Date().getFullYear());
   }
 
+  document.querySelectorAll(".game-card__cover img").forEach((img) => {
+    const hideBrokenImage = () => img.classList.add("is-hidden");
+
+    if (img.complete && img.naturalWidth === 0) {
+      hideBrokenImage();
+    }
+
+    img.addEventListener("error", hideBrokenImage, { once: true });
+  });
+
   const revealEls = document.querySelectorAll(".reveal");
   if (!revealEls.length) return;
 
