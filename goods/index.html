@@ -1,0 +1,926 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>商品管理系统 - 实验三 动态网页</title>
+  <style>
+    :root {
+      --bg: #f4f6f9;
+      --panel: #ffffff;
+      --border: #e2e6ee;
+      --text: #1f2937;
+      --muted: #6b7280;
+      --accent: #2563eb;
+      --accent-dark: #1d4ed8;
+      --accent-soft: #eff4ff;
+      --danger: #dc2626;
+      --danger-soft: #fef2f2;
+      --ok: #059669;
+      --radius: 8px;
+      --shadow: 0 1px 2px rgba(16, 24, 40, .06), 0 1px 3px rgba(16, 24, 40, .1);
+    }
+
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      background: var(--bg);
+      color: var(--text);
+      font: 14px/1.6 "Microsoft YaHei", "PingFang SC", "Segoe UI", Arial, sans-serif;
+    }
+
+    h1, h2, p { margin: 0; }
+
+    button { font: inherit; }
+
+    .app-header {
+      background: var(--panel);
+      border-bottom: 1px solid var(--border);
+    }
+
+    .header-inner {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 16px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .brand-mark {
+      width: 40px;
+      height: 40px;
+      display: grid;
+      place-items: center;
+      border-radius: var(--radius);
+      background: var(--accent);
+      color: #fff;
+      flex: none;
+    }
+
+    .brand h1 { font-size: 18px; font-weight: 700; }
+
+    .brand p { font-size: 12px; color: var(--muted); }
+
+    .header-stat {
+      font-size: 13px;
+      color: var(--muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 8px 14px;
+    }
+
+    .header-stat strong { color: var(--accent); font-size: 16px; }
+
+    .layout {
+      max-width: 1180px;
+      margin: 0 auto;
+      padding: 20px 24px 40px;
+      display: grid;
+      grid-template-columns: 196px minmax(0, 1fr);
+      gap: 16px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+    }
+
+    .panel > h2 {
+      font-size: 14px;
+      font-weight: 700;
+      padding: 14px 16px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .category-menu {
+      padding: 8px;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .category-menu button {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      width: 100%;
+      padding: 9px 12px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--text);
+      cursor: pointer;
+      text-align: left;
+    }
+
+    .category-menu button:hover { background: var(--bg); }
+
+    .category-menu button.active {
+      background: var(--accent-soft);
+      color: var(--accent-dark);
+      font-weight: 700;
+    }
+
+    .category-menu .count {
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .category-menu button.active .count { color: var(--accent); }
+
+    .content {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      min-width: 0;
+    }
+
+    .query-grid {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr)) auto;
+      gap: 12px;
+      align-items: end;
+    }
+
+    .field { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+
+    .field label { font-size: 13px; color: var(--muted); }
+
+    input, select, textarea {
+      width: 100%;
+      padding: 9px 11px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      font: inherit;
+      outline: none;
+    }
+
+    input:focus, select:focus, textarea:focus {
+      border-color: var(--accent);
+      box-shadow: 0 0 0 3px rgba(37, 99, 235, .12);
+    }
+
+    input[readonly] { background: var(--bg); color: var(--muted); }
+
+    textarea { resize: vertical; min-height: 72px; }
+
+    .query-actions { display: flex; gap: 8px; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      padding: 9px 14px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: #fff;
+      color: var(--text);
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn:hover { background: var(--bg); }
+
+    .btn svg { width: 16px; height: 16px; flex: none; }
+
+    .btn-primary {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+
+    .btn-primary:hover { background: var(--accent-dark); border-color: var(--accent-dark); }
+
+    .btn-danger { color: var(--danger); }
+
+    .btn-danger:hover { background: var(--danger-soft); border-color: #fecaca; }
+
+    .table-toolbar {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .table-toolbar h2 { font-size: 14px; font-weight: 700; }
+
+    .toolbar-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+    .table-scroll { overflow-x: auto; }
+
+    table {
+      width: 100%;
+      min-width: 860px;
+      border-collapse: collapse;
+      text-align: center;
+    }
+
+    th, td {
+      padding: 11px 12px;
+      border-bottom: 1px solid var(--border);
+      vertical-align: middle;
+    }
+
+    th {
+      background: #fafbfd;
+      color: var(--muted);
+      font-size: 13px;
+      font-weight: 700;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+      z-index: 1;
+    }
+
+    td { font-size: 13px; }
+
+    tbody tr { cursor: pointer; }
+
+    tbody tr:nth-child(even) { background: #fbfcfe; }
+
+    tbody tr:hover { background: var(--accent-soft); }
+
+    tbody tr.selected {
+      background: var(--accent-soft);
+      box-shadow: inset 3px 0 0 var(--accent);
+      font-weight: 600;
+    }
+
+    .cell-name { text-align: left; font-weight: 600; }
+
+    .cell-desc {
+      text-align: left;
+      color: var(--muted);
+      max-width: 220px;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      white-space: nowrap;
+    }
+
+    .tag {
+      display: inline-block;
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: var(--bg);
+      border: 1px solid var(--border);
+      font-size: 12px;
+      color: var(--muted);
+    }
+
+    .stock-low { color: var(--danger); font-weight: 700; }
+
+    .empty-row td {
+      padding: 40px 12px;
+      color: var(--muted);
+      cursor: default;
+    }
+
+    .table-footer {
+      padding: 12px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 13px;
+      color: var(--muted);
+    }
+
+    #selectionHint strong { color: var(--accent-dark); }
+
+    .form-layer {
+      position: fixed;
+      inset: 0;
+      background: rgba(15, 23, 42, .45);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+      z-index: 10;
+    }
+
+    .form-layer[hidden] { display: none; }
+
+    .form-panel {
+      width: min(640px, 100%);
+      max-height: 90vh;
+      overflow: auto;
+    }
+
+    .form-head {
+      padding: 14px 16px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .form-head h2 { font-size: 15px; }
+
+    .icon-btn {
+      width: 30px;
+      height: 30px;
+      border: 0;
+      border-radius: 6px;
+      background: transparent;
+      color: var(--muted);
+      font-size: 20px;
+      line-height: 1;
+      cursor: pointer;
+    }
+
+    .icon-btn:hover { background: var(--bg); color: var(--text); }
+
+    .form-grid {
+      padding: 16px;
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .form-grid .span-2 { grid-column: 1 / -1; }
+
+    .form-error {
+      margin: 0 16px;
+      padding: 9px 12px;
+      border-radius: 6px;
+      background: var(--danger-soft);
+      color: var(--danger);
+      font-size: 13px;
+      display: none;
+    }
+
+    .form-error.show { display: block; }
+
+    .form-actions {
+      padding: 14px 16px 18px;
+      display: flex;
+      justify-content: flex-end;
+      gap: 8px;
+    }
+
+    @media (max-width: 900px) {
+      .layout { grid-template-columns: 1fr; padding: 16px; }
+      .category-menu { flex-direction: row; flex-wrap: wrap; }
+      .category-menu button { width: auto; }
+      .query-grid { grid-template-columns: 1fr 1fr; }
+      .query-actions { grid-column: 1 / -1; }
+    }
+
+    @media (max-width: 560px) {
+      .header-inner { padding: 14px 16px; }
+      .query-grid, .form-grid { grid-template-columns: 1fr; }
+      .form-grid .span-2 { grid-column: auto; }
+    }
+  </style>
+</head>
+<body>
+  <header class="app-header">
+    <div class="header-inner">
+      <div class="brand">
+        <span class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+            <path d="M6 2 3 6v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2V6l-3-4Z"/>
+            <path d="M3 6h18"/>
+            <path d="M16 10a4 4 0 0 1-8 0"/>
+          </svg>
+        </span>
+        <div>
+          <h1>商品管理系统</h1>
+          <p>实验三 · 动态网页实验</p>
+        </div>
+      </div>
+      <div class="header-stat">共 <strong id="statCount">0</strong> 件商品</div>
+    </div>
+  </header>
+
+  <main class="layout">
+    <aside class="panel">
+      <h2>商品分类</h2>
+      <nav class="category-menu" id="categoryMenu" aria-label="商品分类"></nav>
+    </aside>
+
+    <section class="content">
+      <section class="panel">
+        <h2>条件查询</h2>
+        <div class="query-grid">
+          <div class="field">
+            <label for="queryName">商品名称</label>
+            <input id="queryName" type="text" placeholder="输入商品名称关键字">
+          </div>
+          <div class="field">
+            <label for="queryCode">商品编号</label>
+            <input id="queryCode" type="text" placeholder="输入商品编号">
+          </div>
+          <div class="field">
+            <label for="queryCategory">商品分类</label>
+            <select id="queryCategory"></select>
+          </div>
+          <div class="query-actions">
+            <button class="btn btn-primary" id="btnSearch" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.3-4.3"/></svg>
+              查询
+            </button>
+            <button class="btn" id="btnReset" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12a9 9 0 1 0 9-9 9 9 0 0 0-6.4 2.6L3 8"/><path d="M3 3v5h5"/></svg>
+              重置
+            </button>
+          </div>
+        </div>
+      </section>
+
+      <section class="panel">
+        <div class="table-toolbar">
+          <h2>商品列表</h2>
+          <div class="toolbar-actions">
+            <button class="btn btn-primary" id="btnAdd" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="M12 5v14"/></svg>
+              添加商品
+            </button>
+            <button class="btn" id="btnEdit" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M17 3a2.85 2.83 0 1 1 4 4L7.5 20.5 2 22l1.5-5.5Z"/><path d="m15 5 4 4"/></svg>
+              修改商品
+            </button>
+            <button class="btn btn-danger" id="btnDelete" type="button">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18"/><path d="M19 6v14a2 2 0 0 1-2 2H7a2 2 0 0 1-2-2V6"/><path d="M8 6V4a2 2 0 0 1 2-2h4a2 2 0 0 1 2 2v2"/><path d="M10 11v6"/><path d="M14 11v6"/></svg>
+              删除商品
+            </button>
+          </div>
+        </div>
+
+        <div class="table-scroll">
+          <table>
+            <thead>
+              <tr>
+                <th>商品编号</th>
+                <th>商品名称</th>
+                <th>分类</th>
+                <th>价格（元）</th>
+                <th>已售数量</th>
+                <th>库存数量</th>
+                <th>商品描述</th>
+              </tr>
+            </thead>
+            <tbody id="goodsBody"></tbody>
+          </table>
+        </div>
+
+        <div class="table-footer">
+          <span id="resultCount">当前显示 0 条</span>
+          <span id="selectionHint">未选中商品</span>
+        </div>
+      </section>
+    </section>
+  </main>
+
+  <div class="form-layer" id="formLayer" hidden>
+    <section class="panel form-panel" role="dialog" aria-modal="true" aria-labelledby="formTitle">
+      <div class="form-head">
+        <h2 id="formTitle">添加商品</h2>
+        <button class="icon-btn" id="btnCloseForm" type="button" aria-label="关闭">&times;</button>
+      </div>
+
+      <form id="goodsForm" novalidate>
+        <div class="form-grid">
+          <div class="field">
+            <label for="formCode">商品编号 *</label>
+            <input id="formCode" type="text" placeholder="如 SP011" maxlength="20">
+          </div>
+          <div class="field">
+            <label for="formName">商品名称 *</label>
+            <input id="formName" type="text" placeholder="请输入商品名称" maxlength="30">
+          </div>
+          <div class="field">
+            <label for="formCategory">商品分类 *</label>
+            <select id="formCategory"></select>
+          </div>
+          <div class="field">
+            <label for="formPrice">商品价格（元）*</label>
+            <input id="formPrice" type="number" min="0.01" step="0.01" placeholder="0.00">
+          </div>
+          <div class="field">
+            <label for="formSold">已售数量 *</label>
+            <input id="formSold" type="number" min="0" step="1" placeholder="0">
+          </div>
+          <div class="field">
+            <label for="formStock">库存数量 *</label>
+            <input id="formStock" type="number" min="0" step="1" placeholder="0">
+          </div>
+          <div class="field span-2">
+            <label for="formDesc">商品描述</label>
+            <textarea id="formDesc" placeholder="选填，简单描述商品特点" maxlength="80"></textarea>
+          </div>
+        </div>
+
+        <p class="form-error" id="formError"></p>
+
+        <div class="form-actions">
+          <button class="btn" id="btnCancel" type="button">取消</button>
+          <button class="btn btn-primary" type="submit">保存</button>
+        </div>
+      </form>
+    </section>
+  </div>
+
+  <script>
+    (function () {
+      "use strict";
+
+      var CATEGORIES = ["电子产品", "家居用品", "服饰配件", "食品饮料"];
+
+      var goods = [
+        { code: "SP001", name: "无线蓝牙耳机", category: "电子产品", price: 299.00, sold: 126, stock: 48, desc: "主动降噪，续航 30 小时" },
+        { code: "SP002", name: "机械键盘 87 键", category: "电子产品", price: 359.00, sold: 88, stock: 6, desc: "青轴热插拔，RGB 背光" },
+        { code: "SP003", name: "USB-C 扩展坞", category: "电子产品", price: 189.00, sold: 203, stock: 75, desc: "七合一接口，支持 4K 输出" },
+        { code: "SP004", name: "人体工学办公椅", category: "家居用品", price: 1299.00, sold: 42, stock: 15, desc: "腰托可调，网布透气" },
+        { code: "SP005", name: "纯棉四件套", category: "家居用品", price: 459.00, sold: 156, stock: 60, desc: "100 支长绒棉，亲肤柔软" },
+        { code: "SP006", name: "LED 护眼台灯", category: "家居用品", price: 219.00, sold: 310, stock: 4, desc: "无频闪，三档色温" },
+        { code: "SP007", name: "轻薄防晒外套", category: "服饰配件", price: 259.00, sold: 268, stock: 92, desc: "UPF50+，可收纳便携" },
+        { code: "SP008", name: "帆布休闲双肩包", category: "服饰配件", price: 199.00, sold: 74, stock: 33, desc: "15.6 英寸电脑仓" },
+        { code: "SP009", name: "云南小粒咖啡豆", category: "食品饮料", price: 89.00, sold: 421, stock: 120, desc: "中深烘焙，500g 装" },
+        { code: "SP010", name: "每日坚果礼盒", category: "食品饮料", price: 129.00, sold: 356, stock: 8, desc: "30 小袋混合装" }
+      ];
+
+      var state = {
+        category: "全部",
+        keywordName: "",
+        keywordCode: "",
+        selectedCode: null,
+        editingCode: null
+      };
+
+      var el = {
+        statCount: document.getElementById("statCount"),
+        categoryMenu: document.getElementById("categoryMenu"),
+        queryName: document.getElementById("queryName"),
+        queryCode: document.getElementById("queryCode"),
+        queryCategory: document.getElementById("queryCategory"),
+        btnSearch: document.getElementById("btnSearch"),
+        btnReset: document.getElementById("btnReset"),
+        goodsBody: document.getElementById("goodsBody"),
+        resultCount: document.getElementById("resultCount"),
+        selectionHint: document.getElementById("selectionHint"),
+        btnAdd: document.getElementById("btnAdd"),
+        btnEdit: document.getElementById("btnEdit"),
+        btnDelete: document.getElementById("btnDelete"),
+        formLayer: document.getElementById("formLayer"),
+        formTitle: document.getElementById("formTitle"),
+        goodsForm: document.getElementById("goodsForm"),
+        formCode: document.getElementById("formCode"),
+        formName: document.getElementById("formName"),
+        formCategory: document.getElementById("formCategory"),
+        formPrice: document.getElementById("formPrice"),
+        formSold: document.getElementById("formSold"),
+        formStock: document.getElementById("formStock"),
+        formDesc: document.getElementById("formDesc"),
+        formError: document.getElementById("formError"),
+        btnCloseForm: document.getElementById("btnCloseForm"),
+        btnCancel: document.getElementById("btnCancel")
+      };
+
+      function escapeHtml(value) {
+        return String(value)
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function formatPrice(value) {
+        return Number(value).toFixed(2);
+      }
+
+      function findGoods(code) {
+        for (var i = 0; i < goods.length; i++) {
+          if (goods[i].code === code) return goods[i];
+        }
+        return null;
+      }
+
+      function getCategoryCount(category) {
+        var total = 0;
+        for (var i = 0; i < goods.length; i++) {
+          if (category === "全部" || goods[i].category === category) total++;
+        }
+        return total;
+      }
+
+      function getVisibleGoods() {
+        var nameKey = state.keywordName.trim().toLowerCase();
+        var codeKey = state.keywordCode.trim().toLowerCase();
+
+        return goods.filter(function (item) {
+          var matchCategory = state.category === "全部" || item.category === state.category;
+          var matchName = !nameKey || item.name.toLowerCase().indexOf(nameKey) !== -1;
+          var matchCode = !codeKey || item.code.toLowerCase().indexOf(codeKey) !== -1;
+          return matchCategory && matchName && matchCode;
+        });
+      }
+
+      function renderCategoryMenu() {
+        var list = ["全部"].concat(CATEGORIES);
+        el.categoryMenu.innerHTML = list.map(function (category) {
+          var active = category === state.category ? " active" : "";
+          return '<button type="button" class="' + active.trim() + '" data-category="' + escapeHtml(category) + '"' +
+            (active ? ' aria-current="true"' : "") + '>' +
+            "<span>" + escapeHtml(category) + "</span>" +
+            '<span class="count">' + getCategoryCount(category) + "</span>" +
+            "</button>";
+        }).join("");
+      }
+
+      function renderTable() {
+        var visible = getVisibleGoods();
+
+        if (state.selectedCode && !findGoods(state.selectedCode)) state.selectedCode = null;
+        if (state.selectedCode && !visible.some(function (item) { return item.code === state.selectedCode; })) {
+          state.selectedCode = null;
+        }
+
+        if (!visible.length) {
+          el.goodsBody.innerHTML = '<tr class="empty-row"><td colspan="7">没有符合条件的商品，请调整查询条件后重试</td></tr>';
+        } else {
+          el.goodsBody.innerHTML = visible.map(function (item) {
+            var selected = item.code === state.selectedCode ? " class=\"selected\"" : "";
+            var stockClass = item.stock < 10 ? ' class="stock-low"' : "";
+            return "<tr" + selected + ' data-code="' + escapeHtml(item.code) + '">' +
+              "<td>" + escapeHtml(item.code) + "</td>" +
+              '<td class="cell-name">' + escapeHtml(item.name) + "</td>" +
+              '<td><span class="tag">' + escapeHtml(item.category) + "</span></td>" +
+              "<td>" + formatPrice(item.price) + "</td>" +
+              "<td>" + item.sold + "</td>" +
+              "<td" + stockClass + ">" + item.stock + "</td>" +
+              '<td class="cell-desc" title="' + escapeHtml(item.desc || "无") + '">' + escapeHtml(item.desc || "无") + "</td>" +
+              "</tr>";
+          }).join("");
+        }
+
+        el.statCount.textContent = goods.length;
+        el.resultCount.textContent = "当前显示 " + visible.length + " 条";
+        renderSelectionHint();
+      }
+
+      function renderSelectionHint() {
+        if (!state.selectedCode) {
+          el.selectionHint.textContent = "未选中商品";
+          return;
+        }
+        var item = findGoods(state.selectedCode);
+        el.selectionHint.innerHTML = item
+          ? '已选中：<strong>' + escapeHtml(item.name) + "</strong>（" + escapeHtml(item.code) + "）"
+          : "未选中商品";
+      }
+
+      function renderCategorySelects() {
+        var options = CATEGORIES.map(function (category) {
+          return '<option value="' + escapeHtml(category) + '">' + escapeHtml(category) + "</option>";
+        }).join("");
+
+        el.queryCategory.innerHTML = '<option value="全部">全部分类</option>' + options;
+        el.formCategory.innerHTML = options;
+        el.queryCategory.value = state.category;
+      }
+
+      function selectRow(code) {
+        state.selectedCode = code;
+        renderTable();
+      }
+
+      function requireSelection(action) {
+        if (state.selectedCode && findGoods(state.selectedCode)) return findGoods(state.selectedCode);
+        alert("请先在商品列表中点击选中一行，再进行" + action + "操作。");
+        return null;
+      }
+
+      function nextCode() {
+        var max = 0;
+        goods.forEach(function (item) {
+          var matched = /^SP(\d+)$/i.exec(item.code);
+          if (matched) max = Math.max(max, Number(matched[1]));
+        });
+        return "SP" + String(max + 1).padStart(3, "0");
+      }
+
+      function openForm(mode, item) {
+        state.editingCode = mode === "edit" ? item.code : null;
+        el.formTitle.textContent = mode === "edit" ? "修改商品" : "添加商品";
+        el.formCode.value = mode === "edit" ? item.code : nextCode();
+        el.formCode.readOnly = mode === "edit";
+        el.formName.value = mode === "edit" ? item.name : "";
+        el.formCategory.value = mode === "edit" ? item.category : CATEGORIES[0];
+        el.formPrice.value = mode === "edit" ? item.price : "";
+        el.formSold.value = mode === "edit" ? item.sold : "";
+        el.formStock.value = mode === "edit" ? item.stock : "";
+        el.formDesc.value = mode === "edit" ? item.desc : "";
+        el.formError.textContent = "";
+        el.formError.classList.remove("show");
+        el.formLayer.hidden = false;
+        el.formName.focus();
+      }
+
+      function closeForm() {
+        el.formLayer.hidden = true;
+        state.editingCode = null;
+        el.goodsForm.reset();
+      }
+
+      function showFormError(message) {
+        el.formError.textContent = message;
+        el.formError.classList.add("show");
+      }
+
+      function readForm() {
+        return {
+          code: el.formCode.value.trim(),
+          name: el.formName.value.trim(),
+          category: el.formCategory.value,
+          price: el.formPrice.value.trim(),
+          sold: el.formSold.value.trim(),
+          stock: el.formStock.value.trim(),
+          desc: el.formDesc.value.trim()
+        };
+      }
+
+      function validateForm(data, isEdit) {
+        if (!data.code) return "商品编号不能为空。";
+        if (!isEdit && findGoods(data.code)) return "商品编号已存在，请更换编号。";
+        if (!data.name) return "商品名称不能为空。";
+        if (!data.category) return "请选择商品分类。";
+        if (data.price === "" || isNaN(Number(data.price)) || Number(data.price) <= 0) return "商品价格必须是大于 0 的数字。";
+        if (data.sold === "" || !/^\d+$/.test(data.sold)) return "已售数量必须是不小于 0 的整数。";
+        if (data.stock === "" || !/^\d+$/.test(data.stock)) return "库存数量必须是不小于 0 的整数。";
+        return "";
+      }
+
+      function handleSubmit(event) {
+        event.preventDefault();
+        var data = readForm();
+        var isEdit = state.editingCode !== null;
+        var message = validateForm(data, isEdit);
+
+        if (message) {
+          showFormError(message);
+          return;
+        }
+
+        var record = {
+          code: data.code,
+          name: data.name,
+          category: data.category,
+          price: Number(data.price),
+          sold: Number(data.sold),
+          stock: Number(data.stock),
+          desc: data.desc
+        };
+
+        // Keep the saved record visible even when the current filter would hide it.
+        function ensureVisible(record) {
+          var nameKey = state.keywordName.trim().toLowerCase();
+          var codeKey = state.keywordCode.trim().toLowerCase();
+          var matched = (state.category === "全部" || record.category === state.category) &&
+            (!nameKey || record.name.toLowerCase().indexOf(nameKey) !== -1) &&
+            (!codeKey || record.code.toLowerCase().indexOf(codeKey) !== -1);
+          if (matched) return;
+
+          state.category = "全部";
+          state.keywordName = "";
+          state.keywordCode = "";
+          el.queryName.value = "";
+          el.queryCode.value = "";
+          el.queryCategory.value = "全部";
+        }
+
+        if (isEdit) {
+          var index = goods.findIndex(function (item) { return item.code === state.editingCode; });
+          if (index === -1) {
+            showFormError("未找到需要修改的商品，请重新选择。");
+            return;
+          }
+          goods[index] = record;
+          state.selectedCode = record.code;
+          ensureVisible(record);
+          closeForm();
+          renderCategoryMenu();
+          renderTable();
+          alert("修改成功！\n商品编号：" + record.code + "\n商品名称：" + record.name + "\n商品价格：" + formatPrice(record.price) + " 元");
+        } else {
+          goods.push(record);
+          state.selectedCode = record.code;
+          ensureVisible(record);
+          closeForm();
+          renderCategoryMenu();
+          renderTable();
+          alert("添加成功！\n商品编号：" + record.code + "\n商品名称：" + record.name + "\n分类：" + record.category + "\n价格：" + formatPrice(record.price) + " 元");
+        }
+      }
+
+      function handleDelete() {
+        var item = requireSelection("删除");
+        if (!item) return;
+
+        if (!confirm("确定要删除商品“" + item.name + "”（" + item.code + "）吗？\n删除后无法恢复。")) return;
+
+        var index = goods.findIndex(function (row) { return row.code === item.code; });
+        if (index !== -1) goods.splice(index, 1);
+        state.selectedCode = null;
+        renderCategoryMenu();
+        renderTable();
+        alert("删除成功！\n已删除商品：" + item.name + "（" + item.code + "）");
+      }
+
+      function handleSearch() {
+        state.keywordName = el.queryName.value;
+        state.keywordCode = el.queryCode.value;
+        state.category = el.queryCategory.value;
+        renderCategoryMenu();
+        renderTable();
+      }
+
+      function handleReset() {
+        el.queryName.value = "";
+        el.queryCode.value = "";
+        el.queryCategory.value = "全部";
+        state.keywordName = "";
+        state.keywordCode = "";
+        state.category = "全部";
+        renderCategoryMenu();
+        renderTable();
+      }
+
+      el.categoryMenu.addEventListener("click", function (event) {
+        var button = event.target.closest("button[data-category]");
+        if (!button) return;
+        state.category = button.getAttribute("data-category");
+        el.queryCategory.value = state.category;
+        renderCategoryMenu();
+        renderTable();
+      });
+
+      el.goodsBody.addEventListener("click", function (event) {
+        var row = event.target.closest("tr[data-code]");
+        if (!row) return;
+        selectRow(row.getAttribute("data-code"));
+      });
+
+      el.btnSearch.addEventListener("click", handleSearch);
+      el.btnReset.addEventListener("click", handleReset);
+
+      el.queryName.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") handleSearch();
+      });
+      el.queryCode.addEventListener("keydown", function (event) {
+        if (event.key === "Enter") handleSearch();
+      });
+
+      el.btnAdd.addEventListener("click", function () {
+        openForm("add", null);
+      });
+
+      el.btnEdit.addEventListener("click", function () {
+        var item = requireSelection("修改");
+        if (item) openForm("edit", item);
+      });
+
+      el.btnDelete.addEventListener("click", handleDelete);
+      el.goodsForm.addEventListener("submit", handleSubmit);
+      el.btnCloseForm.addEventListener("click", closeForm);
+      el.btnCancel.addEventListener("click", closeForm);
+
+      el.formLayer.addEventListener("click", function (event) {
+        if (event.target === el.formLayer) closeForm();
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && !el.formLayer.hidden) closeForm();
+      });
+
+      renderCategorySelects();
+      renderCategoryMenu();
+      renderTable();
+    })();
+  </script>
+</body>
+</html>
