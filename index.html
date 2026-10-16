@@ -3,86 +3,276 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="王祺润 · 大二学生 · 代码、单机 3A 与二次元" />
+  <meta name="description" content="王祺润的个人主页：大二在读，写网页，玩单机 3A，也追番。" />
+  <meta name="theme-color" content="#0a0b0d" id="themeColorMeta" />
   <title>王祺润 · 个人主页</title>
+  <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%230a0b0d'/%3E%3Ctext x='32' y='42' text-anchor='middle' font-family='monospace' font-size='26' font-weight='700' fill='%23d4ff3f'%3EW%3C/text%3E%3C/svg%3E" />
+  <script>
+    (function () {
+      document.documentElement.classList.add("js");
+      try {
+        var stored = localStorage.getItem("personal-homepage-theme");
+        var theme = stored === "light" || stored === "dark"
+          ? stored
+          : (window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", theme);
+      } catch (error) {}
+    })();
+  </script>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,400;0,9..40,500;0,9..40,600;0,9..40,700;1,9..40,400&family=Instrument+Serif:ital@0;1&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Instrument+Serif:ital@0;1&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
+  <div class="page-progress" aria-hidden="true"><span id="scrollProgress"></span></div>
+  <div class="page-grid" aria-hidden="true"></div>
   <div class="noise" aria-hidden="true"></div>
 
-  <header class="site-header">
-    <a class="logo" href="#hero">WQR</a>
-    <nav class="nav" aria-label="主导航">
-      <a href="#about">关于</a>
-      <a href="#interests">兴趣</a>
-      <a href="#skills">技能</a>
-      <a href="#projects">项目</a>
-      <a href="#contact">联系</a>
-    </nav>
-    <button type="button" class="theme-toggle" id="themeToggle" aria-label="切换浅色/深色主题">
-      <span class="theme-icon theme-icon--sun" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M4.93 19.07l1.41-1.41M17.66 6.34l1.41-1.41"/></svg>
-      </span>
-      <span class="theme-icon theme-icon--moon" aria-hidden="true">
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
-      </span>
-    </button>
-    <button type="button" class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
-      <span></span><span></span>
-    </button>
+  <a class="skip-link" href="#main">跳到主要内容</a>
+
+  <header class="site-header" id="siteHeader">
+    <div class="site-header__inner">
+      <a class="brand" href="#hero" aria-label="回到顶部">
+        <span class="brand__mark" aria-hidden="true">WQR</span>
+        <span class="brand__text">
+          <strong>王祺润</strong>
+          <em>大二 · 网页方向</em>
+        </span>
+      </a>
+
+      <nav class="nav" id="nav" aria-label="主导航">
+        <a class="nav__link" href="#about" data-nav="about"><span>01</span>关于</a>
+        <a class="nav__link" href="#interests" data-nav="interests"><span>02</span>兴趣</a>
+        <a class="nav__link" href="#skills" data-nav="skills"><span>03</span>技能</a>
+        <a class="nav__link" href="#projects" data-nav="projects"><span>04</span>项目</a>
+        <a class="nav__link" href="#contact" data-nav="contact"><span>05</span>联系</a>
+      </nav>
+
+      <div class="header-actions">
+        <button type="button" class="icon-btn theme-toggle" id="themeToggle" aria-label="切换浅色或深色主题">
+          <span class="theme-icon theme-icon--moon" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z" /></svg>
+          </span>
+          <span class="theme-icon theme-icon--sun" aria-hidden="true">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="4" /><path d="M12 2v2M12 20v2M4.93 4.93l1.42 1.42M17.65 17.65l1.42 1.42M2 12h2M20 12h2M4.93 19.07l1.42-1.42M17.65 6.35l1.42-1.42" /></svg>
+          </span>
+        </button>
+        <button type="button" class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false" aria-controls="nav">
+          <span></span>
+          <span></span>
+        </button>
+      </div>
+    </div>
   </header>
 
-  <main>
-    <section id="hero" class="hero section">
-      <div class="hero__content reveal">
-        <p class="hero__eyebrow">你好，我是 · 大二</p>
-        <h1 class="hero__title"><span class="hero__name">王祺润</span></h1>
-        <p class="hero__tagline">在代码、单机 3A 和二次元之间来回切换。正在把脑子里的点子，一点点做成能打开、能用的东西。</p>
-        <div class="hero__actions">
-          <a href="#projects" class="btn btn--primary">查看项目</a>
-          <a href="#interests" class="btn btn--ghost">我的兴趣</a>
+  <main id="main">
+    <!-- ============ Hero ============ -->
+    <section class="hero" id="hero">
+      <div class="hero__inner">
+        <div class="hero__copy">
+          <p class="status-chip reveal">
+            <span class="status-chip__dot" aria-hidden="true"></span>大二在读 · 正在折腾网页
+          </p>
+
+          <h1 class="hero__title reveal reveal--d1">
+            <span class="hero__greeting">你好，我是</span>
+            <span class="hero__name" data-outline="王祺润">王祺润</span>
+          </h1>
+
+          <p class="hero__role reveal reveal--d2">
+            日常在
+            <span class="typewriter" id="typewriter">写网页</span><span class="typewriter__caret" aria-hidden="true"></span>
+            之间来回切换
+          </p>
+
+          <p class="hero__tagline reveal reveal--d2">
+            在代码、单机 3A 和二次元之间来回切换。正在把脑子里的点子，一点点做成能打开、能用的东西。
+          </p>
+
+          <div class="hero__actions reveal reveal--d3">
+            <a class="btn btn--primary" href="#projects">
+              <span>查看项目</span>
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+            <a class="btn btn--ghost" href="#interests">
+              <span>我的兴趣</span>
+            </a>
+          </div>
+
+          <ul class="hero__meta reveal reveal--d3">
+            <li>
+              <span class="hero__meta-label">NOW</span>
+              <strong>大二在读</strong>
+            </li>
+            <li>
+              <span class="hero__meta-label">FOCUS</span>
+              <strong>网页 / 前端</strong>
+            </li>
+            <li>
+              <span class="hero__meta-label">GITHUB</span>
+              <strong>@qr02</strong>
+            </li>
+          </ul>
         </div>
-        <div class="hero__now" aria-label="最近在玩">
-          <span class="hero__now-label">最近在玩</span>
-          <span class="hero__now-item">艾尔登法环</span>
-          <span class="hero__now-item">光与影：33号远征队</span>
+
+        <div class="hero__visual reveal reveal--d2">
+          <figure class="portrait glow-card">
+            <span class="portrait__corner portrait__corner--tl" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--tr" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--bl" aria-hidden="true"></span>
+            <span class="portrait__corner portrait__corner--br" aria-hidden="true"></span>
+
+            <span class="portrait__label">PORTRAIT / 2026</span>
+
+            <div class="portrait__frame">
+              <div class="portrait__avatar" role="img" aria-label="头像占位：王祺润">
+                <span class="portrait__initials">祺润</span>
+              </div>
+            </div>
+
+            <figcaption class="portrait__caption">
+              <span>
+                <strong>王祺润</strong>
+                <em>大二在读 · qr02</em>
+              </span>
+              <span class="portrait__stamp">HELLO</span>
+            </figcaption>
+          </figure>
+
+          <span class="float-chip float-chip--html" aria-hidden="true">HTML</span>
+          <span class="float-chip float-chip--css" aria-hidden="true">CSS</span>
+          <span class="float-chip float-chip--js" aria-hidden="true">JS</span>
         </div>
       </div>
-      <div class="hero__visual reveal reveal--delay">
-        <div class="avatar" role="img" aria-label="头像占位">
-          <span class="avatar__initials">祺润</span>
-          <div class="avatar__ring"></div>
+
+      <a class="hero__scroll" href="#about">
+        <span>SCROLL</span>
+        <i aria-hidden="true"></i>
+      </a>
+    </section>
+
+    <!-- ============ Marquee ============ -->
+    <div class="marquee" aria-hidden="true">
+      <div class="marquee__track">
+        <div class="marquee__group">
+          <span class="marquee__item">HTML / CSS</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">JavaScript</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Git &amp; GitHub</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">单机 3A</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">魂系动作</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">二次元</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">不会停更的存档点</span>
+          <span class="marquee__dot"></span>
+        </div>
+        <div class="marquee__group">
+          <span class="marquee__item">HTML / CSS</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">JavaScript</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">Git &amp; GitHub</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">单机 3A</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">魂系动作</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">二次元</span>
+          <span class="marquee__dot"></span>
+          <span class="marquee__item">不会停更的存档点</span>
+          <span class="marquee__dot"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ============ About ============ -->
+    <section class="section" id="about">
+      <header class="section-head reveal">
+        <span class="section-head__index" aria-hidden="true">01</span>
+        <div class="section-head__main">
+          <p class="section-head__kicker">ABOUT ME</p>
+          <h2 class="section-head__title">关于<em>我</em></h2>
+        </div>
+        <p class="section-head__lead">一个还在摸索方向的大二学生，把主页当作自己的存档点。</p>
+      </header>
+
+      <div class="about-layout">
+        <aside class="profile-card reveal">
+          <div class="profile-card__top">
+            <span class="profile-card__monogram">WQR / PROFILE</span>
+            <span class="profile-card__status">在读</span>
+          </div>
+          <dl class="profile-facts">
+            <div>
+              <dt>身份</dt>
+              <dd>大二学生</dd>
+            </div>
+            <div>
+              <dt>方向</dt>
+              <dd>网页 / 前端</dd>
+            </div>
+            <div>
+              <dt>常驻</dt>
+              <dd>单机 3A · 二次元</dd>
+            </div>
+            <div>
+              <dt>邮箱</dt>
+              <dd>wanvqr@gmail.com</dd>
+            </div>
+          </dl>
+          <p class="profile-card__note">这个页面会跟着我一起更新。</p>
+        </aside>
+
+        <div class="about-copy">
+          <p class="about-copy__lead reveal reveal--d1">
+            我是王祺润，目前大二在读，对编程和做产品这件事越来越有兴趣。
+          </p>
+          <p class="reveal reveal--d1">
+            平时会写网页和小工具，从 HTML/CSS/JavaScript 入手，也在慢慢补计算机基础和算法。
+          </p>
+          <p class="reveal reveal--d2">
+            课外的大部分时间都交给了单机 3A、魂系动作和动漫。喜欢有完整世界观、有挑战，也有好故事的作品。
+          </p>
+          <p class="reveal reveal--d2">
+            这个站点会同时放下项目、技能和兴趣，算是我的另一个存档点。
+          </p>
+
+          <blockquote class="about-quote reveal reveal--d3">
+            “先把东西做出来，再慢慢把它做好。”
+          </blockquote>
+
+          <ul class="about-tags reveal reveal--d3">
+            <li>写代码</li>
+            <li>打游戏</li>
+            <li>追番</li>
+            <li>折腾主页</li>
+          </ul>
         </div>
       </div>
     </section>
 
-    <section id="about" class="section section--narrow">
-      <h2 class="section__title reveal">关于我</h2>
-      <div class="about reveal reveal--delay">
-        <p>我是王祺润，目前大二在读，对编程和做产品这件事越来越有兴趣。</p>
-        <p>平时会写网页和小工具，从 HTML/CSS/JavaScript 入手，也在慢慢补计算机基础和算法。</p>
-        <p>课外的大部分时间都交给了单机 3A、魂系动作和动漫。喜欢有完整世界观、有挑战，也有好故事的作品。</p>
-        <p>这个站点会同时放下项目、技能和兴趣，算是我的另一个存档点。</p>
-      </div>
-    </section>
-
-    <section id="interests" class="section">
-      <div class="section-heading reveal">
-        <div>
-          <p class="section__kicker">AFTER CLASS</p>
-          <h2 class="section__title">游戏与二次元</h2>
+    <!-- ============ Interests ============ -->
+    <section class="section" id="interests">
+      <header class="section-head reveal">
+        <span class="section-head__index" aria-hidden="true">02</span>
+        <div class="section-head__main">
+          <p class="section-head__kicker">AFTER CLASS</p>
+          <h2 class="section-head__title">游戏与<em>二次元</em></h2>
         </div>
-        <p class="section__intro">代码之外，大部分时间都交给单机 3A、魂系动作和动漫。喜欢有世界观、有挑战、也有好故事的作品。</p>
-      </div>
+        <p class="section-head__lead">代码之外，大部分时间都交给单机 3A、魂系动作和动漫。喜欢有世界观、有挑战、也有好故事的作品。</p>
+      </header>
 
       <div class="interest-grid">
-        <article class="interest-card interest-card--games reveal">
+        <article class="interest-card interest-card--games glow-card reveal">
+          <span class="interest-card__watermark" aria-hidden="true">01</span>
           <div class="interest-card__top">
             <span class="interest-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="M7.5 8.5h9a5 5 0 0 1 4.7 6.7l-.8 2.1a2.4 2.4 0 0 1-4.1.7L14.8 16H9.2l-1.5 2a2.4 2.4 0 0 1-4.1-.7l-.8-2.1A5 5 0 0 1 7.5 8.5Z" />
                 <path d="M7 12v3M5.5 13.5h3M16.5 12.5h.01M18.5 14.5h.01" />
               </svg>
@@ -100,10 +290,11 @@
           </ul>
         </article>
 
-        <article class="interest-card interest-card--anime reveal reveal--delay">
+        <article class="interest-card interest-card--anime glow-card reveal reveal--d1">
+          <span class="interest-card__watermark" aria-hidden="true">02</span>
           <div class="interest-card__top">
             <span class="interest-card__icon" aria-hidden="true">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round">
                 <path d="m12 3 1.3 3.7L17 8l-3.7 1.3L12 13l-1.3-3.7L7 8l3.7-1.3L12 3Z" />
                 <path d="m19 14 .8 2.2L22 17l-2.2.8L19 20l-.8-2.2L16 17l2.2-.8L19 14ZM5 14l.7 2.3L8 17l-2.3.7L5 20l-.7-2.3L2 17l2.3-.7L5 14Z" />
               </svg>
@@ -122,51 +313,55 @@
         </article>
       </div>
 
-      <div class="game-shelf reveal">
-        <div class="game-shelf__head">
+      <div class="game-shelf">
+        <div class="game-shelf__head reveal">
           <div>
-            <p class="section__kicker section__kicker--warm">GAME SHELF</p>
+            <p class="section-head__kicker section-head__kicker--warm">GAME SHELF</p>
             <h3 class="game-shelf__title">游戏收藏架</h3>
           </div>
-          <p class="game-shelf__note">最近在玩，也顺便记下反复回味的作品</p>
+          <p class="game-shelf__note"><span>06</span> 款反复回味的作品</p>
         </div>
 
         <div class="game-grid">
-          <article class="game-card">
+          <article class="game-card glow-card reveal">
             <div class="game-card__cover">
+              <span class="game-card__rank">01</span>
               <span class="game-card__fallback" aria-hidden="true">ELDEN RING</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/1245620/header.jpg" alt="《艾尔登法环》游戏封面" loading="lazy" decoding="async" />
             </div>
             <div class="game-card__body">
               <h4 class="game-card__title">艾尔登法环</h4>
-              <p class="game-card__meta">ELDEN RING · 开放世界 / 魂系</p>
+              <p class="game-card__meta">开放世界 / 魂系</p>
             </div>
           </article>
 
-          <article class="game-card">
+          <article class="game-card glow-card reveal reveal--d1">
             <div class="game-card__cover">
+              <span class="game-card__rank">02</span>
               <span class="game-card__fallback" aria-hidden="true">SEKIRO</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/814380/header.jpg" alt="《只狼：影逝二度》游戏封面" loading="lazy" decoding="async" />
             </div>
             <div class="game-card__body">
               <h4 class="game-card__title">只狼：影逝二度</h4>
-              <p class="game-card__meta">SEKIRO · 动作 / 高难</p>
+              <p class="game-card__meta">动作 / 高难</p>
             </div>
           </article>
 
-          <article class="game-card">
+          <article class="game-card glow-card reveal reveal--d2">
             <div class="game-card__cover">
+              <span class="game-card__rank">03</span>
               <span class="game-card__fallback" aria-hidden="true">DARK SOULS III</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/374320/header.jpg" alt="《黑暗之魂 III》游戏封面" loading="lazy" decoding="async" />
             </div>
             <div class="game-card__body">
               <h4 class="game-card__title">黑暗之魂 III</h4>
-              <p class="game-card__meta">DARK SOULS III · 魂系</p>
+              <p class="game-card__meta">魂系 / 黑暗幻想</p>
             </div>
           </article>
 
-          <article class="game-card">
+          <article class="game-card glow-card reveal">
             <div class="game-card__cover">
+              <span class="game-card__rank">04</span>
               <span class="game-card__fallback" aria-hidden="true">FINAL FANTASY VII</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/1462040/header.jpg" alt="《FINAL FANTASY VII REMAKE》游戏封面" loading="lazy" decoding="async" />
             </div>
@@ -176,8 +371,9 @@
             </div>
           </article>
 
-          <article class="game-card">
+          <article class="game-card glow-card reveal reveal--d1">
             <div class="game-card__cover">
+              <span class="game-card__rank">05</span>
               <span class="game-card__fallback" aria-hidden="true">LIES OF P</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/1627720/header.jpg" alt="《Lies of P》游戏封面" loading="lazy" decoding="async" />
             </div>
@@ -187,8 +383,9 @@
             </div>
           </article>
 
-          <article class="game-card">
+          <article class="game-card glow-card reveal reveal--d2">
             <div class="game-card__cover">
+              <span class="game-card__rank">06</span>
               <span class="game-card__fallback" aria-hidden="true">EXPEDITION 33</span>
               <img src="https://cdn.akamai.steamstatic.com/steam/apps/1903340/header.jpg" alt="《光与影：33号远征队》游戏封面" loading="lazy" decoding="async" />
             </div>
@@ -198,21 +395,22 @@
             </div>
           </article>
         </div>
-        <p class="game-shelf__more">常驻硬盘的还有《黑暗之魂 II》《生化危机 4》《Undertale》以及 Minecraft。</p>
+
+        <p class="game-shelf__more reveal">常驻硬盘的还有《黑暗之魂 II》《生化危机 4》《Undertale》以及 Minecraft。</p>
       </div>
 
-      <div class="now-grid reveal">
-        <div class="now-item">
+      <div class="now-grid">
+        <div class="now-item now-item--play reveal">
           <span class="now-item__label">正在玩</span>
           <strong>艾尔登法环</strong>
           <p>继续探索交界地，偶尔换回《只狼》练练手。</p>
         </div>
-        <div class="now-item">
+        <div class="now-item now-item--anime reveal reveal--d1">
           <span class="now-item__label">正在追</span>
           <strong>热血战斗与奇幻作品</strong>
           <p>喜欢世界观完整、角色鲜明的动画，也会看轻松日常。</p>
         </div>
-        <div class="now-item">
+        <div class="now-item now-item--learn reveal reveal--d2">
           <span class="now-item__label">正在学</span>
           <strong>前端与计算机基础</strong>
           <p>把课堂上的知识做成能打开、能用的小东西。</p>
@@ -220,93 +418,214 @@
       </div>
     </section>
 
-    <section id="skills" class="section">
-      <h2 class="section__title reveal">技能</h2>
-      <div class="skills reveal reveal--delay" role="list">
-        <span class="skill-tag" role="listitem">HTML / CSS</span>
-        <span class="skill-tag" role="listitem">JavaScript</span>
-        <span class="skill-tag" role="listitem">TypeScript</span>
-        <span class="skill-tag" role="listitem">React</span>
-        <span class="skill-tag" role="listitem">Node.js</span>
-        <span class="skill-tag" role="listitem">Git</span>
-        <span class="skill-tag" role="listitem">REST API</span>
-        <span class="skill-tag" role="listitem">响应式设计</span>
-        <span class="skill-tag" role="listitem">Figma</span>
-        <span class="skill-tag" role="listitem">CI/CD</span>
-        <span class="skill-tag" role="listitem">性能优化</span>
-        <span class="skill-tag" role="listitem">无障碍 (a11y)</span>
-      </div>
-    </section>
+    <!-- ============ Skills ============ -->
+    <section class="section" id="skills">
+      <header class="section-head reveal">
+        <span class="section-head__index" aria-hidden="true">03</span>
+        <div class="section-head__main">
+          <p class="section-head__kicker">SKILLS</p>
+          <h2 class="section-head__title">技能<em>与工具</em></h2>
+        </div>
+        <p class="section-head__lead">正在用的、刚上手的、打算学的，都放在这里。</p>
+      </header>
 
-    <section id="projects" class="section">
-      <h2 class="section__title reveal">精选项目</h2>
-      <div class="projects-grid">
-        <article class="project-card reveal">
-          <div class="project-card__meta">
-            <span class="project-card__year">2025</span>
-            <span class="project-card__type">Web App</span>
-          </div>
-          <h3 class="project-card__title">任务看板 Lite</h3>
-          <p class="project-card__desc">轻量看板应用，支持拖拽排序、本地持久化与键盘快捷键，纯前端实现，可离线使用。</p>
-          <ul class="project-card__tags">
-            <li>Vue 3</li>
-            <li>IndexedDB</li>
-            <li>PWA</li>
-          </ul>
-          <a href="#" class="project-card__link">查看详情 →</a>
-        </article>
-
-        <article class="project-card reveal reveal--delay">
-          <div class="project-card__meta">
-            <span class="project-card__year">2024</span>
-            <span class="project-card__type">Open Source</span>
-          </div>
-          <h3 class="project-card__title">CLI 脚手架工具</h3>
-          <p class="project-card__desc">一键生成符合团队规范的项目模板，内置 ESLint、测试与 GitHub Actions 工作流配置。</p>
-          <ul class="project-card__tags">
-            <li>Node.js</li>
-            <li>Commander</li>
-            <li>GitHub Actions</li>
-          </ul>
-          <a href="#" class="project-card__link">查看详情 →</a>
-        </article>
-
-        <article class="project-card reveal reveal--delay-2">
-          <div class="project-card__meta">
-            <span class="project-card__year">2024</span>
-            <span class="project-card__type">Design</span>
-          </div>
-          <h3 class="project-card__title">个人静态主页</h3>
-          <p class="project-card__desc">就是你现在看到的这个站点：单页布局、深浅色主题、响应式与滚动动效，纯 HTML/CSS/JS，可部署到 GitHub Pages。</p>
-          <ul class="project-card__tags">
-            <li>HTML</li>
-            <li>CSS</li>
+      <div class="skill-groups">
+        <article class="skill-group glow-card reveal">
+          <span class="skill-group__num">A / BASICS</span>
+          <h3 class="skill-group__title">前端基础</h3>
+          <ul class="skill-chips">
+            <li>HTML5</li>
+            <li>CSS3</li>
             <li>JavaScript</li>
+            <li>响应式布局</li>
+            <li>语义化标记</li>
           </ul>
-          <a href="https://github.com/qr02" class="project-card__link" target="_blank" rel="noopener noreferrer">在 GitHub 查看 →</a>
+        </article>
+
+        <article class="skill-group glow-card reveal reveal--d1">
+          <span class="skill-group__num">B / TOOLS</span>
+          <h3 class="skill-group__title">工具与协作</h3>
+          <ul class="skill-chips">
+            <li>Git</li>
+            <li>GitHub</li>
+            <li>VS Code</li>
+            <li>Chrome DevTools</li>
+            <li>Markdown</li>
+          </ul>
+        </article>
+
+        <article class="skill-group glow-card reveal reveal--d2">
+          <span class="skill-group__num">C / LEARNING</span>
+          <h3 class="skill-group__title">正在学习</h3>
+          <ul class="skill-chips">
+            <li>计算机基础</li>
+            <li>数据结构与算法</li>
+            <li>前端工程化</li>
+            <li>动手做小项目</li>
+          </ul>
+        </article>
+      </div>
+
+      <div class="skill-cloud reveal">
+        <span class="cloud-tag cloud-tag--xl">HTML / CSS</span>
+        <span class="cloud-tag cloud-tag--lg">JavaScript</span>
+        <span class="cloud-tag">Git</span>
+        <span class="cloud-tag cloud-tag--lg">响应式设计</span>
+        <span class="cloud-tag">GitHub Pages</span>
+        <span class="cloud-tag cloud-tag--xl">动手能力</span>
+        <span class="cloud-tag">VS Code</span>
+        <span class="cloud-tag cloud-tag--lg">调试</span>
+        <span class="cloud-tag">Markdown</span>
+        <span class="cloud-tag">写文档</span>
+        <span class="cloud-tag cloud-tag--lg">持续更新</span>
+        <span class="cloud-tag">好奇心</span>
+      </div>
+    </section>
+
+    <!-- ============ Projects ============ -->
+    <section class="section" id="projects">
+      <header class="section-head reveal">
+        <span class="section-head__index" aria-hidden="true">04</span>
+        <div class="section-head__main">
+          <p class="section-head__kicker">PROJECTS</p>
+          <h2 class="section-head__title">精选<em>项目</em></h2>
+        </div>
+        <p class="section-head__lead">已经上线的、正在筹备的，都先摆出来。</p>
+      </header>
+
+      <div class="projects-grid">
+        <article class="project-card project-card--featured glow-card reveal">
+          <div class="project-card__preview">
+            <div class="browser" aria-hidden="true">
+              <div class="browser__bar">
+                <span></span><span></span><span></span>
+                <em>qr02.github.io</em>
+              </div>
+              <div class="browser__view">
+                <div class="browser__nav"><i></i><i></i><i></i></div>
+                <div class="browser__hero">
+                  <span class="browser__eyebrow">HELLO, I AM</span>
+                  <span class="browser__title">王祺润</span>
+                  <span class="browser__line"></span>
+                  <span class="browser__line browser__line--short"></span>
+                  <span class="browser__btn"></span>
+                </div>
+                <div class="browser__cards"><span></span><span></span><span></span></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="project-card__body">
+            <div class="project-card__meta">
+              <span>2026</span>
+              <span class="badge badge--live">已上线</span>
+            </div>
+            <h3 class="project-card__title">个人静态主页</h3>
+            <p class="project-card__desc">就是你现在看到的这个站点：单页布局、深浅色主题、响应式与滚动动效，纯 HTML/CSS/JS 手写，可部署到 GitHub Pages。</p>
+            <ul class="project-card__tags">
+              <li>HTML</li>
+              <li>CSS</li>
+              <li>JavaScript</li>
+            </ul>
+            <a class="project-card__link" href="https://github.com/qr02" target="_blank" rel="noopener noreferrer">
+              在 GitHub 查看
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+            </a>
+          </div>
+        </article>
+
+        <article class="project-card glow-card reveal">
+          <div class="project-card__banner" aria-hidden="true"><span>02</span></div>
+          <div class="project-card__body">
+            <div class="project-card__meta">
+              <span>IDEA</span>
+              <span class="badge badge--plan">筹备中</span>
+            </div>
+            <h3 class="project-card__title">任务看板 Lite</h3>
+            <p class="project-card__desc">想做一个轻量看板：拖拽排序、本地保存、键盘快捷键，纯前端实现，不登录也能离线用。</p>
+            <ul class="project-card__tags">
+              <li>JavaScript</li>
+              <li>localStorage</li>
+              <li>拖拽交互</li>
+            </ul>
+          </div>
+        </article>
+
+        <article class="project-card glow-card reveal reveal--d1">
+          <div class="project-card__banner" aria-hidden="true"><span>03</span></div>
+          <div class="project-card__body">
+            <div class="project-card__meta">
+              <span>IDEA</span>
+              <span class="badge badge--plan">筹备中</span>
+            </div>
+            <h3 class="project-card__title">学习笔记站</h3>
+            <p class="project-card__desc">把课程笔记和踩坑记录整理成可搜索的静态站点，顺便练一遍从写内容到自动部署的完整流程。</p>
+            <ul class="project-card__tags">
+              <li>Markdown</li>
+              <li>静态站点</li>
+              <li>GitHub Pages</li>
+            </ul>
+          </div>
         </article>
       </div>
     </section>
 
-    <section id="contact" class="section section--narrow">
-      <h2 class="section__title reveal">联系我</h2>
-      <p class="contact__lead reveal reveal--delay">学习交流、项目合作或随便聊聊，发邮件即可。</p>
-      <div class="contact-links reveal reveal--delay">
-        <a class="contact-link" href="mailto:wanvqr@gmail.com">
-          <span class="contact-link__label">Email</span>
-          <span class="contact-link__value">wanvqr@gmail.com</span>
-        </a>
-        <a class="contact-link" href="https://github.com/qr02" target="_blank" rel="noopener noreferrer">
-          <span class="contact-link__label">GitHub</span>
-          <span class="contact-link__value">@qr02</span>
-        </a>
+    <!-- ============ Contact ============ -->
+    <section class="section" id="contact">
+      <header class="section-head reveal">
+        <span class="section-head__index" aria-hidden="true">05</span>
+        <div class="section-head__main">
+          <p class="section-head__kicker">CONTACT</p>
+          <h2 class="section-head__title">有想法，<em>随时来聊</em></h2>
+        </div>
+        <p class="section-head__lead">学习交流、项目合作或随便聊聊，发邮件即可。</p>
+      </header>
+
+      <div class="contact-panel glow-card reveal">
+        <div class="contact-panel__main">
+          <p class="contact-panel__lead">目前最常用的联系方式是邮箱，看到消息会尽快回复。也欢迎来 GitHub 看看我在折腾什么。</p>
+          <div class="contact-panel__actions">
+            <button type="button" class="btn btn--primary" id="copyEmail" data-email="wanvqr@gmail.com">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="9" y="9" width="12" height="12" rx="2" /><path d="M5 15H4a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h10a1 1 0 0 1 1 1v1" /></svg>
+              <span>复制邮箱</span>
+            </button>
+            <a class="btn btn--ghost" href="mailto:wanvqr@gmail.com">
+              <span>写封邮件</span>
+            </a>
+          </div>
+        </div>
+
+        <div class="contact-panel__links">
+          <a class="contact-card" href="mailto:wanvqr@gmail.com">
+            <span>
+              <span class="contact-card__label">EMAIL</span>
+              <strong>wanvqr@gmail.com</strong>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+          <a class="contact-card" href="https://github.com/qr02" target="_blank" rel="noopener noreferrer">
+            <span>
+              <span class="contact-card__label">GITHUB</span>
+              <strong>github.com/qr02</strong>
+            </span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6" /></svg>
+          </a>
+        </div>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
-    <p>© <span id="year"></span> 王祺润 · 用 ❤ 与静态 HTML 构建</p>
+    <div class="site-footer__inner">
+      <p class="site-footer__brand">王祺润</p>
+      <p class="site-footer__meta">© <span id="year"></span> · 手写 HTML / CSS / JS，托管在 GitHub Pages</p>
+      <button type="button" class="to-top" id="toTop" aria-label="回到顶部">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M6 11l6-6 6 6" /></svg>
+      </button>
+    </div>
   </footer>
+
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
   <script src="js/main.js"></script>
 </body>
